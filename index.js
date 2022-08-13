@@ -6,16 +6,18 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const bookHandler = require('./routes/bookHandler');
+const featuredBookHandler = require('./routes/featuredBookHandler');
+const newArrivalBookHandler = require('./routes/newArrivalBookHandler');
 
 
-// Middleware //
+// MIDDLEWARE //
 app.use(cors());
 app.use(express.json());
 // ...................... //
 
 // ? Database connection configuration mongoose //
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vzdnu.mongodb.net/BOIGHOR?retryWrites=true&w=majority`;
-(async () => {
+(() => {
     mongoose
         .connect(uri, {
             useNewUrlParser: true,
@@ -27,8 +29,10 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 // ? ...................... //
 
 
-// Application routes //
+// APPLICATION ROUTES //
 app.use('/book', bookHandler);
+app.use('/featured', featuredBookHandler);
+app.use('/new-arrival', newArrivalBookHandler);
 // ...................//
 
 
@@ -38,7 +42,7 @@ app.use('/book', bookHandler);
 
 
 
-// Default error handler //
+// DEFAULT ERROR HANDLER //
 const errorHandler = (err, req, res, next) => {
     if (res.headersSent) {
         return next(err);

@@ -16,7 +16,15 @@ const bookSchema = mongoose.Schema({
     discountPrice: {
         type: Number,
         required: false,
-    }
+    },
+    imgURL: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        default: Date.now,
+    },
 })
 
 module.exports = bookSchema;
