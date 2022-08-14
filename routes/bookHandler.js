@@ -9,7 +9,7 @@ const Book = new mongoose.model("Book", bookSchema);
 // GET ALL BOOKS
 router.get('/get-all', async (req, res, next) => {
     try {
-        const result = await Book.find();
+        const result = await Book.find({});
         res.status(200).json({
             result: result,
         });
@@ -65,5 +65,31 @@ router.put('/update-one/:id', async (req, res, next) => {
         next("There was a server side error!");
     }
 });
+
+
+// UPDATE/ADD DISCOUNT TO ALL BOOKS
+router.put("/add-discount/:percentage", async (req, res, next) => {
+    const percentage = +req.params.percentage;
+    try {
+        const result = await Book.find({});
+        const updatedBooks = result?.map((book) => {
+            return {
+                ...book.toObject(),
+                price: Math.round(book.price - (percentage * book.price) / 100),
+                previousPrice: Math.round(book.price),
+                discount: percentage,
+            }
+        });
+        await Book.deleteMany({});
+        await Book.insertMany(updatedBooks);
+        res.status(200).json({
+            message: "Success"
+        });
+    } catch (err) {
+        console.log(err);
+        next("There was a server side error!");
+    }
+});
+
 
 module.exports = router;

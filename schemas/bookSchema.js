@@ -13,9 +13,11 @@ const bookSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-    discountPrice: {
+    previousPrice: {
         type: Number,
-        required: false,
+    },
+    discount: {
+        type: Number,
     },
     imgURL: {
         type: String,
