@@ -10,10 +10,21 @@ const FeaturedBook = new mongoose.model("FeaturedBook", featuredBookSchema);
 router.get('/get-all', async (req, res, next) => {
     try {
         const result = await FeaturedBook.find({}).populate("identity");
-        const featuredBooks = result.map(book => book.identity);
         res.status(200).json({
-            // result: result.sort(function (a, b) { return b.sellCount - a.sellCount }),
-            result: featuredBooks,
+            result: result.sort((a, b) => b.sellCount - a.sellCount),
+        });
+    } catch (err) {
+        next("There was a server side error!");
+    }
+});
+
+
+// GET BESTSELLING BOOK
+router.get('/bestselling', async (req, res, next) => {
+    try {
+        const result = await FeaturedBook.find({}).populate("identity");
+        res.status(200).json({
+            result: result.sort((a, b) => b.sellCount - a.sellCount)[0],
         });
     } catch (err) {
         next("There was a server side error!");
