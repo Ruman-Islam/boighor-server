@@ -57,7 +57,7 @@ router.put('/update-one/:id', async (req, res, next) => {
                 $set: {
                     imgURL: req.body.imgURL
                 }
-            }, { new: true, useFindAndModify: false, })
+            }, { new: true, useFindAndModify: false, });
         res.status(200).json({
             message: "Book was updated successfully!",
         });
@@ -87,6 +87,30 @@ router.put("/add-discount/:percentage", async (req, res, next) => {
         });
     } catch (err) {
         console.log(err);
+        next("There was a server side error!");
+    }
+});
+
+
+// ADD SPECIAL DISCOUNT ON A BOOK
+router.put("/add-special-discount", async (req, res, next) => {
+    const id = req.query.id;
+    const percentage = +req.query.percentage;
+    try {
+        const book = await Book.findOne({ _id: id });
+        await Book.findByIdAndUpdate(
+            { _id: id },
+            {
+                $set: {
+                    price: Math.round(book.price - (percentage * book.price) / 100),
+                    previousPrice: Math.round(book.price),
+                    discount: percentage,
+                }
+            }, { new: true, useFindAndModify: false, });
+        res.status(200).json({
+            message: "Success"
+        });
+    } catch (err) {
         next("There was a server side error!");
     }
 });
