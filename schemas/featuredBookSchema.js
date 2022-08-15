@@ -13,6 +13,6 @@ const featuredBookSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Book"
     }
-})
+});
 
 module.exports = featuredBookSchema;

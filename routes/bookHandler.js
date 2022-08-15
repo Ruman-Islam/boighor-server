@@ -19,6 +19,58 @@ router.get('/get-all', async (req, res, next) => {
 });
 
 
+// GET CHILDREN BOOKS
+router.get('/get-children', async (req, res, next) => {
+    try {
+        const result = await Book.find({ category: 'children' });
+        res.status(200).json({
+            result: result,
+        });
+    } catch (err) {
+        next("There was a server side error!");
+    }
+});
+
+
+// GET PUBLICATION DROPDOWN LIST
+router.get('/get-publications', async (req, res, next) => {
+    const publications = [];
+    try {
+        const result = await Book.find({}, 'publication');
+        for (const pb of result) {
+            if (publications.indexOf(pb.publication) === -1) {
+                publications.push(pb.publication);
+            }
+        }
+        res.status(200).json({
+            result: publications.sort(),
+        });
+    } catch (err) {
+        next("There was a server side error!");
+    }
+});
+
+
+// GET WRITER DROPDOWN LIST
+router.get('/get-writers', async (req, res, next) => {
+    const writers = [];
+    try {
+        const result = await Book.find({}, 'writer');
+        for (const pb of result) {
+            console.log(pb);
+            if (writers.indexOf(pb.writer) === -1) {
+                writers.push(pb.writer);
+            }
+        }
+        res.status(200).json({
+            result: writers.sort(),
+        });
+    } catch (err) {
+        next("There was a server side error!");
+    }
+});
+
+
 // ADD A BOOK
 router.post('/add-one', async (req, res, next) => {
     const newBook = new Book(req.body);
