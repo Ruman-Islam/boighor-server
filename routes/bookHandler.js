@@ -32,6 +32,16 @@ router.get('/get-children', async (req, res, next) => {
 });
 
 
+// BOOK SEARCH IMPLEMENTATION
+router.get('/search-book', async (req, res) => {
+    const query = req.query.char.toLowerCase();
+    const books = await Book.find({ title: { $regex: query, $options: "i" } });
+    res.status(200).json({
+        result: books,
+    })
+});
+
+
 // GET PUBLICATION DROPDOWN LIST
 router.get('/get-publications', async (req, res, next) => {
     const publications = [];
@@ -57,7 +67,6 @@ router.get('/get-writers', async (req, res, next) => {
     try {
         const result = await Book.find({}, 'writer');
         for (const pb of result) {
-            console.log(pb);
             if (writers.indexOf(pb.writer) === -1) {
                 writers.push(pb.writer);
             }
@@ -120,7 +129,7 @@ router.put('/update-one/:id', async (req, res, next) => {
 
 
 // UPDATE/ADD DISCOUNT TO ALL BOOKS
-router.put("/add-discount/:percentage", async (req, res, next) => {
+router.put('/add-discount/:percentage', async (req, res, next) => {
     const percentage = +req.params.percentage;
     try {
         const result = await Book.find({});
@@ -145,7 +154,7 @@ router.put("/add-discount/:percentage", async (req, res, next) => {
 
 
 // ADD SPECIAL DISCOUNT ON A BOOK
-router.put("/add-special-discount", async (req, res, next) => {
+router.put('/add-special-discount', async (req, res, next) => {
     const id = req.query.id;
     const percentage = +req.query.percentage;
     try {
