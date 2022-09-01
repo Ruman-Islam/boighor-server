@@ -1,45 +1,29 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-const bookHandler = require('./routes/bookHandler');
-const featuredBookHandler = require('./routes/featuredBookHandler');
-const newArrivalBookHandler = require('./routes/newArrivalBookHandler');
+const bookHandler = require('./routes/v1/bookHandler');
+const featuredBookHandler = require('./routes/v1/featuredBookHandler');
+const newArrivalBookHandler = require('./routes/v1/newArrivalBookHandler');
+const databaseConnect = require('./utilities/dbConnect');
 
 
-// MIDDLEWARE //
+// APPLICATION MIDDLEWARE //
 app.use(cors());
 app.use(express.json());
 // ...................... //
 
-// ? Database connection configuration mongoose //
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vzdnu.mongodb.net/BOIGHOR?retryWrites=true&w=majority`;
-(() => {
-    mongoose
-        .connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }).then(() => {
-            console.log('Database connected successfully!')
-        }).catch(err => console.log(err))
-})();
-// ? ...................... //
+// ? Database connection //
+databaseConnect();
 
 
 // APPLICATION ROUTES //
-app.use('/book', bookHandler);
-app.use('/featured', featuredBookHandler);
-app.use('/new-arrival', newArrivalBookHandler);
+app.use('/api/v1/book', bookHandler);
+app.use('/api/v1/featured', featuredBookHandler);
+app.use('/api/v1/new-arrival', newArrivalBookHandler);
 // ...................//
-
-
-
-
-
-
 
 
 // DEFAULT ERROR HANDLER //

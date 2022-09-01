@@ -1,39 +1,33 @@
-const express = require('express');
 const mongoose = require('mongoose');
-const router = express.Router();
 const featuredBookSchema = require('../schemas/featuredBookSchema');
 const FeaturedBook = new mongoose.model("FeaturedBook", featuredBookSchema);
 
-
-
 // GET FEATURED BOOKS
-router.get('/get-all', async (req, res, next) => {
+module.exports.getFeaturedBooks = async (req, res, next) => {
     try {
         const result = await FeaturedBook.find({}).populate("identity");
         res.status(200).json({
-            result: result.sort((a, b) => b.sellCount - a.sellCount),
+            "result": result.sort((a, b) => b.sellCount - a.sellCount),
         });
     } catch (err) {
         next("There was a server side error!");
     }
-});
-
+};
 
 // GET BESTSELLING BOOK
-router.get('/bestselling', async (req, res, next) => {
+module.exports.getBestSoldOutBook = async (req, res, next) => {
     try {
         const result = await FeaturedBook.find({}).populate("identity");
         res.status(200).json({
-            result: result.sort((a, b) => b.sellCount - a.sellCount)[0],
+            "result": result.sort((a, b) => b.sellCount - a.sellCount)[0],
         });
     } catch (err) {
         next("There was a server side error!");
     }
-});
-
+};
 
 // UPDATE FEATURED BOOK SELL COUNT
-router.put("/update/:id", async (req, res, next) => {
+module.exports.updateBookSellCount = async (req, res, next) => {
     try {
         const book = await FeaturedBook.findOne({ _id: req.params.id })
         await FeaturedBook.findByIdAndUpdate(
@@ -45,11 +39,9 @@ router.put("/update/:id", async (req, res, next) => {
                 }
             }, { upsert: true });
         res.status(200).json({
-            message: "Success"
+            "message": "Success"
         })
     } catch (err) {
         next("There was a server side error!");
     }
-});
-
-module.exports = router;
+};
