@@ -32,7 +32,7 @@ router.get('/bestselling', async (req, res, next) => {
 });
 
 
-// UPDATE FEATURED SELL
+// UPDATE FEATURED BOOK SELL COUNT
 router.put("/update/:id", async (req, res, next) => {
     try {
         const book = await FeaturedBook.findOne({ _id: req.params.id })
@@ -43,14 +43,13 @@ router.put("/update/:id", async (req, res, next) => {
                     sellCount: book ? book.sellCount + 1 : 1,
                     identity: req.params.id
                 }
-            },
-            { upsert: true })
+            }, { upsert: true });
         res.status(200).json({
             message: "Success"
         })
     } catch (err) {
         next("There was a server side error!");
     }
-})
+});
 
 module.exports = router;

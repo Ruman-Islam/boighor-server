@@ -66,13 +66,33 @@ router.get('/get-writers', async (req, res, next) => {
     const writers = [];
     try {
         const result = await Book.find({}, 'writer');
-        for (const pb of result) {
-            if (writers.indexOf(pb.writer) === -1) {
-                writers.push(pb.writer);
+        for (const wr of result) {
+            if (writers.indexOf(wr.writer) === -1) {
+                writers.push(wr.writer);
             }
         }
+        // const result = await Book.aggregate([
+        //     { "$group": { "_id": "$writer", "count": { "$sum": 1 } } },
+        //     { "$match": { "_id": { "$ne": null }, "count": { "$gt": 1 } } },
+        //     { "$project": { "name": "$_id", "_id": 0 } }
+        // ], { allowDiskUse: true })
+
         res.status(200).json({
             result: writers.sort(),
+        });
+    } catch (err) {
+        next("There was a server side error!");
+    }
+});
+
+
+// GET A BOOK
+router.get('/get-one', async (req, res, next) => {
+    const id = req.query.id;
+    try {
+        const result = await Book.findOne({ _id: id });
+        res.status(200).json({
+            result: result,
         });
     } catch (err) {
         next("There was a server side error!");
@@ -116,9 +136,9 @@ router.put('/update-one/:id', async (req, res, next) => {
             { _id: req.params.id },
             {
                 $set: {
-                    imgURL: req.body.imgURL
+                    rating: 5
                 }
-            }, { new: true, useFindAndModify: false, });
+            }, { upsert: true });
         res.status(200).json({
             message: "Book was updated successfully!",
         });

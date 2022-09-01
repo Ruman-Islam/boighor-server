@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const featuredBookSchema = mongoose.Schema({
-    sellCount: {
-        type: Number,
-        required: true,
-    },
     date: {
         type: Date,
         default: Date.now,
     },
     identity: {
         type: mongoose.Types.ObjectId,
-        ref: "Book"
-    }
+        ref: "Book",
+    },
+    sellCount: {
+        type: Number,
+        required: true,
+    },
 });
 
 module.exports = featuredBookSchema;
