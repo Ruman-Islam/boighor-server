@@ -42,16 +42,13 @@ module.exports.getSearchedBooks = async (req, res) => {
 
 // GET PUBLICATION DROPDOWN LIST
 module.exports.getPublicationNames = async (req, res, next) => {
-    const publications = [];
     try {
-        const result = await Book.find({}, 'publication');
-        for (const pb of result) {
-            if (publications.indexOf(pb.publication) === -1) {
-                publications.push(pb.publication);
-            }
-        }
+        const publications = await Book.aggregate([
+            { "$group": { "_id": "$publication" } },
+        ])
+
         res.status(200).json({
-            "result": publications.sort(),
+            "result": publications,
         });
     } catch (err) {
         next("There was a server side error!");
@@ -60,22 +57,13 @@ module.exports.getPublicationNames = async (req, res, next) => {
 
 // GET WRITER DROPDOWN LIST
 module.exports.getWriterNames = async (req, res, next) => {
-    const writers = [];
     try {
-        const result = await Book.find({}, 'writer');
-        for (const wr of result) {
-            if (writers.indexOf(wr.writer) === -1) {
-                writers.push(wr.writer);
-            }
-        }
-        // const result = await Book.aggregate([
-        //     { "$group": { "_id": "$writer", "count": { "$sum": 1 } } },
-        //     { "$match": { "_id": { "$ne": null }, "count": { "$gt": 1 } } },
-        //     { "$project": { "name": "$_id", "_id": 0 } }
-        // ], { allowDiskUse: true })
+        const writers = await Book.aggregate([
+            { "$group": { "_id": "$writer" } },
+        ])
 
         res.status(200).json({
-            "result": writers.sort(),
+            "result": writers,
         });
     } catch (err) {
         next("There was a server side error!");

@@ -9,7 +9,7 @@ const databaseConnect = () => {
             useUnifiedTopology: true,
         }).then(() => {
             console.log('Database connected successfully!')
-        }).catch(err => console.log(err))
+        }).catch(err => console.log('Error message -', err))
 };
 // ? ...................... //
 

@@ -8,6 +8,7 @@ const bookHandler = require('./routes/v1/bookHandler');
 const featuredBookHandler = require('./routes/v1/featuredBookHandler');
 const newArrivalBookHandler = require('./routes/v1/newArrivalBookHandler');
 const databaseConnect = require('./utilities/dbConnect');
+const errorHandler = require('./middleware/errorHandler');
 
 
 // APPLICATION MIDDLEWARE //
@@ -26,16 +27,23 @@ app.use('/api/v1/new-arrival', newArrivalBookHandler);
 // ...................//
 
 
-// DEFAULT ERROR HANDLER //
-const errorHandler = (err, req, res, next) => {
-    if (res.headersSent) {
-        return next(err);
-    }
-    res.status(500).json({ error: err });
-}
+
+// DEFAULT ERROR HANDLERS //
 app.use(errorHandler);
-// .........................
+
+app.all("*", (req, res) => {
+    res.json({
+        "message": "No route found"
+    });
+})
 
 app.listen(port, () => {
     console.log('BOIGHOR server is running on:', port);
 })
+
+process.on("unhandledRejection", (error) => {
+    console.log(error.name, error.message);
+    app.close(() => {
+        process.exit(1);
+    })
+});
