@@ -1,29 +1,20 @@
-const express = require('express');
-const cors = require('cors');
 require('dotenv').config();
-const app = express();
-const port = process.env.PORT || 5000;
+const app = require('./app');
 
-const bookHandler = require('./routes/v1/bookHandler');
-const featuredBookHandler = require('./routes/v1/featuredBookHandler');
-const newArrivalBookHandler = require('./routes/v1/newArrivalBookHandler');
+const book_routes = require('./routes/v1/book.route');
+const featured_routes = require('./routes/v1/featured.route');
+const new_added_routes = require('./routes/v1/newArrivalBookHandler');
 const databaseConnect = require('./utilities/dbConnect');
 const errorHandler = require('./middleware/errorHandler');
-
-
-// APPLICATION MIDDLEWARE //
-app.use(cors());
-app.use(express.json());
-// ...................... //
 
 // ? Database connection //
 databaseConnect();
 
 
 // APPLICATION ROUTES //
-app.use('/api/v1/book', bookHandler);
-app.use('/api/v1/featured', featuredBookHandler);
-app.use('/api/v1/new-arrival', newArrivalBookHandler);
+app.use('/api/v1/book', book_routes);
+app.use('/api/v1/featured', featured_routes);
+app.use('/api/v1/new-arrival', new_added_routes);
 // ...................//
 
 
@@ -35,10 +26,6 @@ app.all("*", (req, res) => {
     res.json({
         "message": "No route found"
     });
-})
-
-app.listen(port, () => {
-    console.log('BOIGHOR server is running on:', port);
 })
 
 process.on("unhandledRejection", (error) => {

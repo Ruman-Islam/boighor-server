@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const bookSchema = require('../schemas/bookSchema');
-const Book = new mongoose.model("Book", bookSchema);
+const book_schema = require('../schemas/bookSchema');
+const Book = new mongoose.model("Book", book_schema);
 
 // GET ALL BOOKS
 module.exports.getAllBooks = async (req, res, next) => {
@@ -45,7 +45,8 @@ module.exports.getPublicationNames = async (req, res, next) => {
     try {
         const publications = await Book.aggregate([
             { "$group": { "_id": "$publication" } },
-        ])
+            { "$sort": { "_id": 1 } },
+        ]);
 
         res.status(200).json({
             "result": publications,
@@ -60,7 +61,8 @@ module.exports.getWriterNames = async (req, res, next) => {
     try {
         const writers = await Book.aggregate([
             { "$group": { "_id": "$writer" } },
-        ])
+            { "$sort": { "_id": 1 } },
+        ]);
 
         res.status(200).json({
             "result": writers,
@@ -92,7 +94,12 @@ module.exports.addABook = async (req, res, next) => {
             "message": "Book was inserted successfully!",
         })
     } catch (err) {
-        next("There was a server side errors!");
+        if (err.name === 'ValidationError') {
+            const error = Object.values(err.errors).map(val => val.message);
+            next(error);
+        } else {
+            next(err);
+        }
     }
 };
 
@@ -102,9 +109,14 @@ module.exports.addManyBooks = async (req, res, next) => {
         await Book.insertMany(req.body);
         res.status(200).json({
             "message": "Books were inserted successfully!",
-        })
+        });
     } catch (err) {
-        next("There was a server side errors!");
+        if (err.name === 'ValidationError') {
+            const error = Object.values(err.errors).map(val => val.message);
+            next(error);
+        } else {
+            next(err);
+        }
     }
 };
 
