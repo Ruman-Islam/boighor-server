@@ -1,9 +1,10 @@
 require('dotenv').config();
 const app = require('./app');
 
-const book_routes = require('./routes/v1/book.route');
-const featured_routes = require('./routes/v1/featured.route');
-const new_added_routes = require('./routes/v1/newArrivalBookHandler');
+
+const book_get_routes = require('./routes/v1/book/get.route');
+const book_post_routes = require('./routes/v1/book/post.route');
+const book_patch_put_routes = require('./routes/v1/book/patch_put.route');
 const databaseConnect = require('./utilities/dbConnect');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -12,9 +13,7 @@ databaseConnect();
 
 
 // APPLICATION ROUTES //
-app.use('/api/v1/book', book_routes);
-app.use('/api/v1/featured', featured_routes);
-app.use('/api/v1/new-arrival', new_added_routes);
+app.use('/api/v1/book', book_get_routes, book_post_routes, book_patch_put_routes);
 // ...................//
 
 
