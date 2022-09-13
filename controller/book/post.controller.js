@@ -1,6 +1,5 @@
-const { Types: { ObjectId }, model } = require('mongoose');
-const book_schema = require('../../schemas/bookSchema');
-const Book = new model("Book", book_schema);
+const { Types: { ObjectId } } = require('mongoose');
+const Book = require('../../models/Book');
 
 
 

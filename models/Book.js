@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const book_schema = mongoose.Schema({
+const Book_Schema = mongoose.Schema({
     title: {
         type: String,
         required: [true, "Title is required.400"],
@@ -83,6 +83,8 @@ const book_schema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-});
+}, { timestamps: true });
 
-module.exports = book_schema;
+const Book = mongoose.model("Book", Book_Schema);
+
+module.exports = Book;

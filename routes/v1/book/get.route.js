@@ -1,5 +1,5 @@
 const express = require('express');
-const getController = require('../../../controller/bookControllers/get.controller');
+const getController = require('../../../controller/book/get.controller');
 const router = express.Router();
 
 
@@ -25,7 +25,7 @@ router.get('/writers', getController.getWriter);
 router.get('/featured', getController.getFeaturedBooks);
 
 // GET BESTSELLING BOOK
-router.get('/bestselling', getController.getBestSoldOutBook);
+router.get('/bestselling', getController.getBestSellingBook);
 
 // GET A BOOK
 router.get('/get-one/:id', getController.getABook);

@@ -2,16 +2,27 @@ const errorHandler = (error, req, res, next) => {
     if (Array.isArray(error)) {
         const errArr = error[0].split(".");
         return res.status(+errArr[1]).json({
-            "error": errArr[1],
+            "statusCode": errArr[1],
             "message": errArr[0]
         });
     }
-    if (!res.headersSent) {
+    // if (error.includes("No data found.")) {
+    //     return res.status(404).json({
+    //         "statusCode": 404,
+    //         "message": "No data found."
+    //     });
+    // }
+    if (error.includes("There was a server side error.")) {
         return res.status(500).json({
-            "error": 500,
-            "message": error
+            "statusCode": 500,
+            "message": "There was a server side error."
         });
     }
+    // if (!res.headersSent) {
+    //     return res.json({
+    //         "message": error
+    //     });
+    // }
 }
 
 module.exports = errorHandler;
