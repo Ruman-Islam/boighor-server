@@ -1,40 +1,37 @@
-const { Types: { ObjectId } } = require('mongoose');
-const Book = require('../../models/Book');
+const bookServices = require('../../services/book/post.services');
 
 
 
 // ADD A BOOK
 module.exports.addABook = async (req, res, next) => {
     try {
-        const newBook = req.body;
-        await Book.create(newBook);
+        const result = await bookServices.addABook(req.body, next);
+        if (!result) {
+            return res.status(500).json({
+                "result": 'Something went wrong.',
+            });
+        }
         return res.status(200).json({
             "message": "Inserted successfully!",
         })
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            const error = Object.values(err.errors).map(val => val.message);
-            next(error);
-        } else {
-            next(err);
-        }
+        return next(err);
     }
 };
 
 // ADD MANY BOOKS
 module.exports.addManyBooks = async (req, res, next) => {
     try {
-        const newBooks = req.body;
-        await Book.insertMany(newBooks);
+        const result = await bookServices.addManyBooks(req.body, next, res);
+        if (!result) {
+            return res.status(500).json({
+                "result": 'Something went wrong.',
+            });
+        }
         return res.status(200).json({
             "message": "Inserted successfully!",
-        });
+        })
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            const error = Object.values(err.errors).map(val => val.message);
-            next(error);
-        } else {
-            next(err);
-        }
+        return next(err);
     }
 };

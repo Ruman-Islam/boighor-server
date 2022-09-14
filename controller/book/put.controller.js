@@ -1,5 +1,6 @@
 const { Types: { ObjectId } } = require('mongoose');
 const Book = require('../../models/Book');
+const bookServices = require('../../services/book/put.services');
 
 
 // ADD SPECIAL DISCOUNT ON A BOOK
@@ -7,20 +8,16 @@ module.exports.updateSpecialDiscount = async (req, res, next) => {
     try {
         const id = req.query.id;
         const percentage = +req.query.percentage;
-        const book = await Book.findOne({ _id: id });
-        await Book.findByIdAndUpdate(
-            { _id: id },
-            {
-                $set: {
-                    price: Math.round(book.price - (percentage * book.price) / 100),
-                    previousPrice: Math.round(book.price),
-                    discount: percentage,
-                }
-            }, { new: true, useFindAndModify: false, });
-        res.status(200).json({
-            "message": "Success"
+        const result = await bookServices.updateSpecialDiscount(id, percentage, res)
+        if (!result) {
+            return res.status(500).json({
+                "result": 'Something went wrong.',
+            });
+        }
+        return res.status(200).json({
+            "message": "Book was updated successfully!",
         });
     } catch (err) {
-        next("There was a server side error!");
+        return next("There was a server side error!");
     }
 };

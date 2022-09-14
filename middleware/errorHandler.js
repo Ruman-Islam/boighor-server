@@ -18,11 +18,11 @@ const errorHandler = (error, req, res, next) => {
             "message": "There was a server side error."
         });
     }
-    // if (!res.headersSent) {
-    //     return res.json({
-    //         "message": error
-    //     });
-    // }
+    if (!res.headersSent) {
+        return res.json({
+            "message": error
+        });
+    }
 }
 
 module.exports = errorHandler;

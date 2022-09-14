@@ -54,3 +54,18 @@ exports.updateDiscountToAll = async (percentage) => {
         return false;
     }
 };
+
+// UPDATE FEATURED BOOK SELL COUNT
+exports.updateBookSellCount = async (ID) => {
+    try {
+        const { id } = ID;
+        const result = await Book.updateOne({ _id: id }, { $inc: { sellCount: 1 } });
+        if (result.modifiedCount > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
+};

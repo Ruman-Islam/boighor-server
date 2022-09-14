@@ -10,6 +10,6 @@ router.patch('/update-one/:id', patchController.updateABook);
 router.patch('/update-discount/:percentage', patchController.updateDiscountToAll);
 
 // UPDATE FEATURED BOOK SELL COUNT
-router.patch("/update/:id", patchController.updateBookSellCount);
+router.patch("/update-sellCount/:id", patchController.updateBookSellCount);
 
 module.exports = router;

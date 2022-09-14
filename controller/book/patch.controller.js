@@ -1,4 +1,3 @@
-const Book = require('../../models/Book');
 const bookServices = require('../../services/book/patch.services');
 
 
@@ -37,7 +36,7 @@ module.exports.updateDiscountToAll = async (req, res, next) => {
             "message": "Books were updated successfully!",
         });
     } catch (err) {
-        next("There was a server side error!");
+        return next("There was a server side error!");
     }
 };
 
@@ -45,12 +44,16 @@ module.exports.updateDiscountToAll = async (req, res, next) => {
 // UPDATE FEATURED BOOK SELL COUNT
 module.exports.updateBookSellCount = async (req, res, next) => {
     try {
-        await Book.findByIdAndUpdate(
-            { _id: req.params.id }, { $inc: { sellCount: 1 } });
-        res.status(200).json({
-            "message": "Success"
-        })
+        const result = await bookServices.updateBookSellCount(req.params);
+        if (!result) {
+            return res.status(500).json({
+                "result": 'Something went wrong.',
+            });
+        }
+        return res.status(200).json({
+            "message": "Sell count updated!",
+        });
     } catch (err) {
-        next("There was a server side error!");
+        return next("There was a server side error!");
     }
 };
