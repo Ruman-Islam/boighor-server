@@ -1,7 +1,10 @@
+require("colors");
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const mongoose = require('mongoose');
+const port = process.env.PORT || 8080;
 
 // IMPORTING APPLICATION ROUTES
 const book_get_routes = require('./routes/v1/book/get.route');
@@ -17,11 +20,11 @@ app.use(express.json());
 // ...................... //
 
 // UTILS
-const databaseConnect = require('./utilities/dbConnect');
+// const databaseConnect = require('./utilities/dbConnect');
 const errorHandler = require('./middleware/errorHandler');
 
 // DATABASE CONNECTION //
-databaseConnect();
+// databaseConnect();
 
 app.get("/", (req, res) => {
     res.send("Route is working!");
@@ -38,6 +41,10 @@ app.use('/api/v1/author',
     author_get_routes,
 );
 // ...................//
+
+app.listen(port, () => {
+    console.log(`BOIGHOR server is running on: ${port}`.yellow.bold);
+});
 
 // DEFAULT ERROR HANDLERS //
 app.use(errorHandler);
