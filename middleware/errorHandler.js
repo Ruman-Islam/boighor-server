@@ -6,6 +6,11 @@ const errorHandler = (error, req, res, next) => {
             "message": errArr[0]
         });
     }
+    if (!res.headersSent) {
+        return res.json({
+            "message": error
+        });
+    }
     // if (error.includes("No data found.")) {
     //     return res.status(404).json({
     //         "statusCode": 404,
@@ -16,11 +21,6 @@ const errorHandler = (error, req, res, next) => {
         return res.status(500).json({
             "statusCode": 500,
             "message": "There was a server side error."
-        });
-    }
-    if (!res.headersSent) {
-        return res.json({
-            "message": error
         });
     }
 }

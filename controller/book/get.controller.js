@@ -196,7 +196,7 @@ module.exports.getSpecialOfferedBook = async (req, res, next) => {
     try {
         const result = await bookServices.getSpecialOfferedBook();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }
@@ -210,3 +210,27 @@ module.exports.getSpecialOfferedBook = async (req, res, next) => {
         next(err);
     }
 };
+
+
+// GET BOOKS CATEGORY WISE
+module.exports.getBooksCategoryWise = async (req, res, next) => {
+    try {
+        const { query } = req.query;
+        const result = await bookServices.getBooksCategoryWise(query);
+        if (result === 0) {
+            return res.status(404).json({
+                "result": 'No data found',
+            });
+        }
+        if (!result) {
+            return next("There was a server side error.");
+        }
+        return res.status(200).json({
+            "result": result,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+

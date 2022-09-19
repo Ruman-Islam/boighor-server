@@ -1,10 +1,27 @@
 const mongoose = require('mongoose');
 
 const Book_Schema = mongoose.Schema({
+    vendor_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, "Vendor ID is required.400"],
+        ref: "Vendor",
+    },
+    imgURL: {
+        type: String,
+        required: [true, "Image URL is required.400"],
+    },
     title: {
         type: String,
         required: [true, "Title is required.400"],
         trim: true,  // trim the whitespace after & before
+    },
+    author: {
+        type: String,
+        required: [true, "Author name is required.400"],
+    },
+    publisher: {
+        type: String,
+        required: [true, "Publisher is required.400"],
     },
     category: {
         type: String,
@@ -13,14 +30,35 @@ const Book_Schema = mongoose.Schema({
         minLength: [2, "Category is too short.400"],
         maxLength: [20, "Category is too large.400"],
     },
-    price: {
-        type: Number,
-        required: [true, "Price is required.400"],
-        min: [0, "Price can't be negative.400"],
+    country: {
+        type: String,
+        required: [true, "Country is required.400"],
     },
-    previousPrice: {
+    language: {
+        type: String,
+        required: [true, "Language is required.400"],
+    },
+    edition: {
+        type: String,
+        required: [true, "Edition is required.400"],
+    },
+    copy_version: {
+        type: String,
+        required: [true, "Version is required.400"],
+    },
+    ISBN: {
         type: Number,
-        default: 0,
+        required: [true, "ISBN number is required.400"],
+    },
+    original_price: {
+        type: Number,
+        min: [0, "Original price can't be negative.400"],
+        default: 0
+    },
+    sell_price: {
+        type: Number,
+        required: [true, "Sell price is required.400"],
+        min: [0, "Sell price can't be negative.400"],
     },
     quantity: {
         type: Number,
@@ -38,48 +76,52 @@ const Book_Schema = mongoose.Schema({
             message: "Quantity must be an integer.400",
         },
     },
-    imgURL: {
-        type: String,
-        required: [true, "Image is required.400"],
+    page_length: {
+        type: Number,
+        required: [true, "Number of page is required.400"],
     },
-    publication: {
-        type: String,
-        required: [true, "Publication name is required.400"],
+    prev_discount: {
+        type: Number,
+        default: 0,
     },
-    writer: {
-        type: String,
-        required: [true, "Writer name is required.400"],
+    current_discount: {
+        type: Number,
+        default: 0,
     },
-    description: {
-        type: String,
-        required: [true, "Description is required.400"],
+    sell_count: {
+        type: Number,
+        default: 0,
     },
-    supplier: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Supplier",
+    ratings: {
+        type: Array,
+        default: [
+            { star: 1, count: 0 },
+            { star: 2, count: 0 },
+            { star: 3, count: 0 },
+            { star: 4, count: 0 },
+            { star: 5, count: 0 },
+        ]
+    },
+    offers: {
+        type: Array,
+        default: []
+    },
+    reviews: {
+        type: Array,
+        default: []
+    },
+    summary: {
+        type: String,
     },
     // status: {
     //     type: String,
     //     required: true,
-    //     enum: {
-    //       values: ["in stock", "out of stock", "discontinued"],
-    //       message: "status can't be {VALUE}",
-    //     },
+    // enum: {
+    //   values: ["in stock", "out of stock", "discontinued"],
+    //   message: "status can't be {VALUE}",
     // },
-    discount: {
-        type: Number,
-        default: 0,
-    },
-    rating: {
-        type: Number,
-        max: [5, "Rating can't be more than 5.400"],
-        default: 0,
-    },
-    sellCount: {
-        type: Number,
-        default: 0,
-    },
-    date: {
+    // },
+    upload_date: {
         type: Date,
         default: Date.now,
     },

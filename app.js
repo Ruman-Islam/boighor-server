@@ -8,6 +8,8 @@ const book_post_routes = require('./routes/v1/book/post.route');
 const book_patch_routes = require('./routes/v1/book/patch.route');
 const book_put_routes = require('./routes/v1/book/put.route');
 
+const author_get_routes = require('./routes/v1/author/get.route');
+
 // APPLICATION MIDDLEWARE //
 app.use(cors());
 app.use(express.json());
@@ -23,6 +25,9 @@ app.use('/api/v1/book',
     book_post_routes,
     book_patch_routes,
     book_put_routes,
+);
+app.use('/api/v1/author',
+    author_get_routes,
 );
 // ...................//
 

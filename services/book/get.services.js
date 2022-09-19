@@ -22,7 +22,7 @@ exports.newlyAddedBooks = async () => {
         if (newBooks?.length <= 0) {
             return 0;
         }
-        newBooks.sort((a, b) => new Date(b?.date) - new Date(a?.date));
+        newBooks.sort((a, b) => new Date(b?.upload_date) - new Date(a?.upload_date));
         return newBooks;
     } catch (error) {
         return false;
@@ -32,7 +32,7 @@ exports.newlyAddedBooks = async () => {
 // GET CHILDREN BOOKS
 exports.getChildrenBooks = async () => {
     try {
-        const childrenBooks = await Book?.find({ category: 'children' });
+        const childrenBooks = await Book?.find({ category: ['শিশু-কিশোর', 'কমিকস ও ছবির গল্প'] });
         if (childrenBooks?.length <= 0) {
             return 0;
         }
@@ -66,7 +66,7 @@ exports.getPublication = async () => {
     try {
         const publications = await Book.aggregate([
             // { $group: { _id: "$publication", count: { $count: {} } } },
-            { $group: { _id: "$publication" } },
+            { $group: { _id: "$publisher" } },
             { $sort: { _id: 1 } },
         ]);
         if (publications?.length <= 0) {
@@ -82,8 +82,8 @@ exports.getPublication = async () => {
 exports.getWriter = async () => {
     try {
         const writers = await Book.aggregate([
-            // { $group: { _id: "$publication", count: { $count: {} } } },
-            { $group: { _id: "$writer" } },
+            // { $group: { _id: "$author", count: { $count: {} } } },
+            { $group: { _id: "$author" } },
             { $sort: { _id: 1 } },
         ]);
         if (writers?.length <= 0) {
@@ -99,11 +99,11 @@ exports.getWriter = async () => {
 exports.getFeaturedBooks = async () => {
     try {
         const result = await Book.aggregate([
-            { $sort: { sellCount: -1 } },
+            { $sort: { sell_count: -1 } },
             {
                 $project: {
-                    title: 1, publication: 1, imgURL: 1,
-                    price: 1, discount: 1, previousPrice: 1
+                    title: 1, publisher: 1, author: 1, imgURL: 1,
+                    sell_price: 1, original_price: 1, current_discount: 1,
                 }
             }
         ]);
@@ -120,11 +120,11 @@ exports.getFeaturedBooks = async () => {
 exports.getBestSellingBook = async () => {
     try {
         const bestselling = await Book.aggregate([
-            { $sort: { sellCount: -1 } },
+            { $sort: { sell_count: -1 } },
             {
                 $project: {
-                    title: 1, publication: 1, imgURL: 1,
-                    price: 1, discount: 1, previousPrice: 1
+                    title: 1, publisher: 1, author: 1, imgURL: 1,
+                    sell_price: 1, original_price: 1, current_discount: 1,
                 }
             }
         ]).limit(1);
@@ -171,3 +171,19 @@ exports.getSpecialOfferedBook = async () => {
         return false;
     }
 };
+
+// GET BOOKS CATEGORY WISE
+exports.getBooksCategoryWise = async (query) => {
+    try {
+        const books = await Book.aggregate([
+            { $match: { category: query } }
+        ]).limit(10);
+        if (books?.length < 1) {
+            return 0;
+        }
+        return books;
+    } catch (error) {
+        return false;
+    }
+};
+

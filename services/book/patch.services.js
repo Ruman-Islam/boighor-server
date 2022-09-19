@@ -64,7 +64,7 @@ exports.updateSpecialDiscount = async (ID, percentage, res) => {
                 "message": "ID is not valid."
             });
         }
-        const result = await Book.updateOne(
+        const result = await Book.findByIdAndUpdate(
             { _id: ID },
             [{
                 $set:
@@ -87,7 +87,7 @@ exports.updateSpecialDiscount = async (ID, percentage, res) => {
 exports.updateBookSellCount = async (ID) => {
     try {
         const { id } = ID;
-        const result = await Book.updateOne({ _id: id }, { $inc: { sellCount: 1 } });
+        const result = await Book.findByIdAndUpdate({ _id: id }, { $inc: { sellCount: 1 } });
         if (result.modifiedCount > 0) {
             return true;
         } else {
