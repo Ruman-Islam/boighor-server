@@ -1,19 +1,25 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const port = process.env.PORT || 5000;
+const app = require('./utilities/app');
 
-// APPLICATION MIDDLEWARE //
-// app.use(cors());
-app.use(express.json());
-// ...................... //
+// UTILS
+const databaseConnect = require('./utilities/dbConnect');
+const errorHandler = require('./middleware/errorHandler');
 
-app.get("/", (req, res) => {
-    res.send("Route is working!");
-});
+// DATABASE CONNECTION //
+databaseConnect();
 
 
-app.listen(port, () => {
-    console.log(`BOIGHOR server is running on: ${port}`);
+// DEFAULT ERROR HANDLERS //
+app.use(errorHandler);
+
+app.all("*", (req, res) => {
+    res.json({
+        "message": "No route found"
+    });
+})
+
+process.on("unhandledRejection", (error) => {
+    console.log(error.name, error.message);
+    app.close(() => {
+        process.exit(1);
+    })
 });
