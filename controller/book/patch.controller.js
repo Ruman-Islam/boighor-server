@@ -76,3 +76,23 @@ module.exports.updateBookSellCount = async (req, res, next) => {
         return next("There was a server side error!");
     }
 };
+
+
+// UPDATE INDIVIDUAL BOOK RATING BY USER
+module.exports.update_book_rating = async (req, res, next) => {
+    try {
+        const { id } = req.query;
+        const { rating } = req.query;
+        const result = await bookServices.update_book_rating(id, rating, res, next);
+        if (!result) {
+            return res.status(500).json({
+                "result": 'Something went wrong.',
+            });
+        }
+        return res.status(200).json({
+            "message": "Rating updated",
+        });
+    } catch (err) {
+        return next("There was a server side error!");
+    }
+};

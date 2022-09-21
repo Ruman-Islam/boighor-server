@@ -47,10 +47,12 @@ exports.getSearchedBooks = async (query) => {
     try {
         const { char } = query;
         const searchedBooks = await Book.find({
-            title: {
-                $regex: char.toLowerCase(),
-                $options: "i"
-            }
+            "$or": [
+                { title: { '$regex': char.toLowerCase(), '$options': 'i' } },
+                { author: { '$regex': char.toLowerCase(), '$options': 'i' } },
+                { publisher: { '$regex': char.toLowerCase(), '$options': 'i' } },
+                { category: { '$regex': char.toLowerCase(), '$options': 'i' } },
+            ]
         });
         if (searchedBooks?.length <= 0) {
             return 0;

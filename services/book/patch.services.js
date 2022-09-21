@@ -97,3 +97,25 @@ exports.updateBookSellCount = async (ID) => {
         return false;
     }
 };
+
+// UPDATE INDIVIDUAL BOOK RATING BY USER
+exports.update_book_rating = async (ID, RATING, RES, NEXT) => {
+    console.log(ID, RATING)
+    try {
+        const result = await Book.findOneAndUpdate(
+            { _id: ID },
+            { $inc: { 'ratings.$[el].count': 1 } },
+            {
+                arrayFilters: [{ "el.star": +RATING }],
+                new: true
+            }
+        )
+        if (result) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
+};

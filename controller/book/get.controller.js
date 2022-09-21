@@ -49,7 +49,7 @@ module.exports.getChildrenBooks = async (req, res, next) => {
     try {
         const result = await bookServices.getChildrenBooks();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }

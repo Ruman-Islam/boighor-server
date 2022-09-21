@@ -4,15 +4,29 @@ const router = express.Router();
 
 
 // UPDATE A BOOK
-router.patch('/update-one/:id', patchController.updateABook);
+router
+    .route('/update-one/:id')
+    .patch(patchController.updateABook)
 
 // UPDATE/ADD DISCOUNT TO ALL BOOKS
-router.patch('/update-discount/:percentage', patchController.updateDiscountToAll);
+router
+    .route('/update-discount/:percentage')
+    .patch(patchController.updateDiscountToAll)
 
 // ADD SPECIAL DISCOUNT ON A BOOK
-router.patch('/add-special-discount', patchController.updateSpecialDiscount);
+router
+    .route('/add-special-discount')
+    .patch(patchController.updateSpecialDiscount)
 
 // UPDATE FEATURED BOOK SELL COUNT
-router.patch("/update-sellCount/:id", patchController.updateBookSellCount);
+router
+    .route('/update-sellCount/:id')
+    .patch(patchController.updateBookSellCount)
+
+// UPDATE INDIVIDUAL BOOK RATING BY USER
+router
+    .route('/update_book_rating')
+    .patch(patchController.update_book_rating)
+
 
 module.exports = router;
