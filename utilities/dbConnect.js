@@ -7,7 +7,7 @@ const port = process.env.PORT || 8080;
 // ? Database connection configuration mongoose //
 const databaseConnect = () => {
     mongoose
-        .connect('mongodb+srv://warehouse:3Fqyo8QaaI3PAcfk@cluster0.vzdnu.mongodb.net/BOIGHOR?retryWrites=true&w=majority', {
+        .connect(process.env.ATLAS_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
