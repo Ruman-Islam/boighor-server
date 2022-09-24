@@ -52,6 +52,8 @@ exports.getSearchedBooks = async (query) => {
                 { author: { '$regex': char.toLowerCase(), '$options': 'i' } },
                 { publisher: { '$regex': char.toLowerCase(), '$options': 'i' } },
                 { category: { '$regex': char.toLowerCase(), '$options': 'i' } },
+                { country: { '$regex': char.toLowerCase(), '$options': 'i' } },
+                { language: { '$regex': char.toLowerCase(), '$options': 'i' } },
             ]
         });
         if (searchedBooks?.length <= 0) {
@@ -161,9 +163,10 @@ exports.getABook = async (ID, res) => {
 
 // GET SPECIAL OFFER
 exports.getSpecialOfferedBook = async () => {
+    console.log('first')
     try {
         const specialOfferedBook = await Book.aggregate([
-            { $match: { discount: { $gte: 25 } } }
+            { $match: { current_discount: { $gte: 25 } } }
         ]).limit(1);
         if (specialOfferedBook?.length <= 0) {
             return 0;

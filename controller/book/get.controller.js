@@ -7,7 +7,7 @@ exports.getAllBooks = async (req, res, next) => {
     try {
         const result = await bookServices.getAllBooks();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }
@@ -28,7 +28,7 @@ exports.newlyAddedBooks = async (req, res) => {
     try {
         const result = await bookServices.newlyAddedBooks();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }
@@ -91,7 +91,7 @@ module.exports.getPublication = async (req, res, next) => {
     try {
         const result = await bookServices.getPublication();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }
@@ -112,7 +112,7 @@ module.exports.getWriter = async (req, res, next) => {
     try {
         const result = await bookServices.getWriter();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }
@@ -133,7 +133,7 @@ module.exports.getFeaturedBooks = async (req, res, next) => {
     try {
         const result = await bookServices.getFeaturedBooks();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }
@@ -154,7 +154,7 @@ module.exports.getBestSellingBook = async (req, res, next) => {
     try {
         const result = await bookServices.getBestSellingBook();
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }
@@ -175,7 +175,7 @@ module.exports.getABook = async (req, res, next) => {
     try {
         const result = await bookServices.getABook(req.params, res);
         if (result === 0) {
-            return res.status(200).json({
+            return res.status(404).json({
                 "result": 'No data found',
             });
         }

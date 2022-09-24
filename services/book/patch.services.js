@@ -38,9 +38,10 @@ exports.updateDiscountToAll = async (percentage) => {
             [{
                 $set:
                 {
-                    "price": { $round: { $subtract: ["$price", { $multiply: ["$price", percentage / 100] }] } },
-                    "previousPrice": "$price",
-                    "discount": percentage
+                    "sell_price": { $round: { $subtract: ["$sell_price", { $multiply: ["$sell_price", percentage / 100] }] } },
+                    "prev_discount": "$current_discount",
+                    "current_discount": percentage,
+                    "original_price": "$sell_price"
                 }
             }],
             { multi: true }
@@ -64,14 +65,15 @@ exports.updateSpecialDiscount = async (ID, percentage, res) => {
                 "message": "ID is not valid."
             });
         }
-        const result = await Book.findByIdAndUpdate(
+        const result = await Book.updateOne(
             { _id: ID },
             [{
                 $set:
                 {
-                    "price": { $round: { $subtract: ["$price", { $multiply: ["$price", percentage / 100] }] } },
-                    "previousPrice": "$price",
-                    "discount": percentage
+                    "sell_price": { $round: { $subtract: ["$sell_price", { $multiply: ["$sell_price", percentage / 100] }] } },
+                    "prev_discount": "$current_discount",
+                    "current_discount": percentage,
+                    "original_price": "$sell_price"
                 }
             }],
         );
@@ -87,7 +89,7 @@ exports.updateSpecialDiscount = async (ID, percentage, res) => {
 exports.updateBookSellCount = async (ID) => {
     try {
         const { id } = ID;
-        const result = await Book.findByIdAndUpdate({ _id: id }, { $inc: { sellCount: 1 } });
+        const result = await Book.updateOne({ _id: id }, { $inc: { sellCount: 1 } });
         if (result.modifiedCount > 0) {
             return true;
         } else {

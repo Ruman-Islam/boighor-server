@@ -11,6 +11,9 @@ const book_put_routes = require('../routes/v1/book/put.route');
 
 const author_get_routes = require('../routes/v1/author/get.route');
 
+const user_put_routes = require('../routes/v1/user/put.route');
+const user_get_routes = require('../routes/v1/user/get.route');
+
 // APPLICATION MIDDLEWARE //
 app.use(cors());
 app.use(express.json());
@@ -28,9 +31,16 @@ app.use('/api/v1/book',
     book_patch_routes,
     book_put_routes,
 );
+
 app.use('/api/v1/author',
     author_get_routes,
 );
+
+app.use('/api/v1/user',
+    user_get_routes,
+    user_put_routes,
+);
+
 // ...................//
 
 module.exports = app;
