@@ -14,6 +14,11 @@ const author_get_routes = require('../routes/v1/author/get.route');
 const user_put_routes = require('../routes/v1/user/put.route');
 const user_get_routes = require('../routes/v1/user/get.route');
 
+const cart_put_routes = require('../routes/v1/Cart/put.route');
+
+const order_put_routes = require('../routes/v1/order/put.route');
+const order_get_routes = require('../routes/v1/order/get.route');
+
 // APPLICATION MIDDLEWARE //
 app.use(cors());
 app.use(express.json());
@@ -41,6 +46,14 @@ app.use('/api/v1/user',
     user_put_routes,
 );
 
+app.use('/api/v1/cart',
+    cart_put_routes,
+);
+
+app.use('/api/v1/order',
+    order_put_routes,
+    order_get_routes,
+);
 // ...................//
 
 module.exports = app;

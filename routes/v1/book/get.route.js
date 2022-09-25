@@ -36,4 +36,5 @@ router.get('/special-offer', getController.getSpecialOfferedBook);
 // GET BOOKS CATEGORY WISE
 router.get('/category', getController.getBooksCategoryWise);
 
+
 module.exports = router;

@@ -163,7 +163,6 @@ exports.getABook = async (ID, res) => {
 
 // GET SPECIAL OFFER
 exports.getSpecialOfferedBook = async () => {
-    console.log('first')
     try {
         const specialOfferedBook = await Book.aggregate([
             { $match: { current_discount: { $gte: 25 } } }
@@ -191,4 +190,5 @@ exports.getBooksCategoryWise = async (query) => {
         return false;
     }
 };
+
 
