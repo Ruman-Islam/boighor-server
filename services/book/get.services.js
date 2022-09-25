@@ -99,6 +99,23 @@ exports.getWriter = async () => {
     }
 };
 
+// GET CATEGORY LIST
+exports.getCategories = async () => {
+    try {
+        const writers = await Book.aggregate([
+            // { $group: { _id: "$author", count: { $count: {} } } },
+            { $group: { _id: "$category" } },
+            { $sort: { _id: 1 } },
+        ]);
+        if (writers?.length <= 0) {
+            return 0;
+        }
+        return writers;
+    } catch (error) {
+        return false;
+    }
+};
+
 // GET FEATURED BOOKS
 exports.getFeaturedBooks = async () => {
     try {

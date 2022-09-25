@@ -18,6 +18,9 @@ router.get('/search', getController.getSearchedBooks);
 // GET PUBLICATION DROPDOWN LIST
 router.get('/publications', getController.getPublication);
 
+// GET CATEGORY LIST
+router.get('/category', getController.getCategories);
+
 // GET WRITER DROPDOWN LIST
 router.get('/writers', getController.getWriter);
 

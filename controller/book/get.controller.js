@@ -127,6 +127,26 @@ module.exports.getWriter = async (req, res, next) => {
     }
 };
 
+// GET CATEGORY LIST
+module.exports.getCategories = async (req, res, next) => {
+    try {
+        const result = await bookServices.getCategories();
+        if (result === 0) {
+            return res.status(404).json({
+                "result": 'No data found',
+            });
+        }
+        if (!result) {
+            return next("There was a server side error.");
+        }
+        return res.status(200).json({
+            "result": result,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 
 // GET FEATURED BOOKS
 module.exports.getFeaturedBooks = async (req, res, next) => {
