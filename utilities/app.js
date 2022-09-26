@@ -19,6 +19,8 @@ const cart_put_routes = require('../routes/v1/Cart/put.route');
 const order_put_routes = require('../routes/v1/order/put.route');
 const order_get_routes = require('../routes/v1/order/get.route');
 
+const report_put_routes = require('../routes/v1/report/put.route')
+
 // APPLICATION MIDDLEWARE //
 app.use(cors());
 app.use(express.json());
@@ -53,6 +55,10 @@ app.use('/api/v1/cart',
 app.use('/api/v1/order',
     order_put_routes,
     order_get_routes,
+);
+
+app.use('/api/v1/report',
+    report_put_routes,
 );
 // ...................//
 
