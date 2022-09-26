@@ -40,7 +40,6 @@ module.exports.addManyBooks = async (req, res, next) => {
 module.exports.getUserCartItems = async (req, res, next) => {
     try {
         const { ids } = req.body;
-        console.log(ids);
         const result = await bookServices.getUserCartItems(ids);
         if (!result) {
             return res.status(404).json({
