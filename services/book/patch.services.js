@@ -101,8 +101,7 @@ exports.updateBookSellCount = async (ID) => {
 };
 
 // UPDATE INDIVIDUAL BOOK RATING BY USER
-exports.update_book_rating = async (ID, RATING, RES, NEXT) => {
-    console.log(ID, RATING)
+exports.update_book_rating = async (ID, RATING) => {
     try {
         const result = await Book.findOneAndUpdate(
             { _id: ID },
