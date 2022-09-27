@@ -45,8 +45,8 @@ exports.addManyBooks = async (body, next, res) => {
 // GET USER'S CART ITEMS
 exports.getUserCartItems = async (ids) => {
     try {
-        const result = await Book.find({ '_id': { $in: ids } },
-            { title: 1, author: 1, sell_price: 1, imgURL: 1 });
+        const result = await Book.find({ _id: { $in: ids } },
+            { title: 1, author: 1, sell_price: 1, imgURL: 1, vendor_id: 1, _id: 1 });
         if (result.length < 1) {
             return 0;
         }

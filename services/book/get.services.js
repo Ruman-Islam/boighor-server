@@ -123,7 +123,7 @@ exports.getFeaturedBooks = async () => {
             { $sort: { sell_count: -1 } },
             {
                 $project: {
-                    title: 1, publisher: 1, author: 1, imgURL: 1,
+                    title: 1, publisher: 1, author: 1, imgURL: 1, quantity: 1,
                     sell_price: 1, original_price: 1, current_discount: 1,
                 }
             }
@@ -144,7 +144,7 @@ exports.getBestSellingBook = async () => {
             { $sort: { sell_count: -1 } },
             {
                 $project: {
-                    title: 1, publisher: 1, author: 1, imgURL: 1,
+                    title: 1, publisher: 1, author: 1, imgURL: 1, quantity: 1,
                     sell_price: 1, original_price: 1, current_discount: 1,
                 }
             }

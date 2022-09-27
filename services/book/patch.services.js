@@ -21,7 +21,6 @@ exports.updateABook = async (ID, body, res) => {
                 }
             });
         if (!book) {
-            console.log('first')
             return 0;
         }
         return book;

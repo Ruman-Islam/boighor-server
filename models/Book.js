@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const Book_Schema = mongoose.Schema({
-    vendor_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: [true, "Vendor ID is required.400"],
-        ref: "Vendor",
-    },
+
     imgURL: {
         type: String,
         required: [true, "Image URL is required.400"],
@@ -27,8 +23,6 @@ const Book_Schema = mongoose.Schema({
         type: String,
         required: [true, "Category is required.400"],
         trim: true,
-        minLength: [2, "Category is too short.400"],
-        maxLength: [20, "Category is too large.400"],
     },
     country: {
         type: String,
