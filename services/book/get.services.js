@@ -45,15 +45,15 @@ exports.getChildrenBooks = async () => {
 // BOOK SEARCH IMPLEMENTATION
 exports.getSearchedBooks = async (query) => {
     try {
-        const { char } = query;
+        const  char  = query?.char?.toLowerCase();
         const searchedBooks = await Book.find({
             "$or": [
-                { title: { '$regex': char.toLowerCase(), '$options': 'i' } },
-                { author: { '$regex': char.toLowerCase(), '$options': 'i' } },
-                { publisher: { '$regex': char.toLowerCase(), '$options': 'i' } },
-                { category: { '$regex': char.toLowerCase(), '$options': 'i' } },
-                { country: { '$regex': char.toLowerCase(), '$options': 'i' } },
-                { language: { '$regex': char.toLowerCase(), '$options': 'i' } },
+                { title: { '$regex': char, '$options': 'i' } },
+                { author: { '$regex': char, '$options': 'i' } },
+                { publisher: { '$regex': char, '$options': 'i' } },
+                { category: { '$regex': char, '$options': 'i' } },
+                { country: { '$regex': char, '$options': 'i' } },
+                { language: { '$regex': char, '$options': 'i' } },
             ]
         });
         if (searchedBooks?.length <= 0) {
